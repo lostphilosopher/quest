@@ -1,0 +1,73 @@
+.container-fluid.chrome
+  .row
+    .col-sm-2
+      %strong
+        Stats:
+      %br
+      - stats = @game.stats
+      = "DIP: #{stats[:dip]}"
+      %br
+      = "CMD: #{stats[:cmd]}"
+      %br
+      = "MED: #{stats[:med]}"
+      %br
+      = "TAC: #{stats[:tac]}"
+      %br
+      = "SCI: #{stats[:sci]}"
+      %br
+
+      %strong
+        Resources:
+      %br
+      = "Reputation: 5"
+      %br
+      = "Moral: 5"
+      %br
+      = "Medicine: 5"
+      %br
+      = "Lab Tech: 5"
+      %br
+      = "Bullets: 5"
+      %br
+
+    .col-sm-8.bordered.viewscreen
+      .container-fluid
+        .row
+          %br
+          %br
+        .row
+          .col-xs-10.col-xs-offset-1
+            - if @challenge
+              .centered
+                .panel.panel-default
+                  .panel-heading
+                    = "#{@challenge.name.upcase} (Threat Level: #{@challenge.level})"
+                  .panel-body
+                    = @challenge.description
+                  .panel-footer.text-right
+                    = link_to('Accept', game_challenge_accept_path(game_id: @game.id, challenge_id: @challenge.id), method: :post)
+                    = ' | '
+                    = link_to('Retreat', game_challenge_retreat_path(game_id: @game.id, challenge_id: @challenge.id), method: :post)
+        .row
+          %br
+          %br
+    .col-sm-2
+      .text-center
+        = link_to('Engage', game_path(id: @game.id), class: 'btn btn-default')
+        %br
+        %strong
+          Progress:
+        = @game.progress
+        %br
+        %strong
+          Points:
+        = @game.points
+  .row
+    .col-sm-1
+    - @game.officers.each do |officer|
+      .col-sm-2
+        .text-center
+          %strong
+            = officer.name
+            %br
+            = officer.station

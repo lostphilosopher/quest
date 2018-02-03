@@ -1,0 +1,43 @@
+// "bootstrap-sprockets" must be imported before "bootstrap" and "bootstrap/variables"
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+body {
+  background-color: #000000 !important;
+  color: #32CD32 !important;
+  border-color: #FFFFFF;
+}
+
+a {
+  color: #000000;
+}
+
+.viewscreen {
+  height: 300px;
+}
+.bordered {
+  border-style: solid;
+  border-width: 1px;
+  border-color: #32CD32;
+}
+.panel-default {
+  border-color: #32CD32;
+  .panel-heading {
+    color: #000000;
+    background-color: #32CD32;
+  }
+  .panel-body {
+    color: #32CD32;
+    background-color: #000000;
+  }
+  .panel-footer {
+    color: #000000;
+    background-color: #32CD32;
+  }
+}
+
+.btn-default {
+  border-color: #000000;
+  color: #000000;
+  background-color: #32CD32;
+}
