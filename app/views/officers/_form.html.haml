@@ -6,20 +6,31 @@
   %strong
     Stats:
   %br
-  = "DIP: #{officer.dip}"
+  .text-right
+    = "CMD: #{officer.cmd}"
+    %br
+    = "ENG: #{officer.eng}"
+    %br
+    = "MED: #{officer.med}"
+    %br
+    = "TAC: #{officer.tac}"
+    %br
+    = "SCI: #{officer.sci}"
   %br
-  = "CMD: #{officer.cmd}"
-  %br
-  = "MED: #{officer.med}"
-  %br
-  = "TAC: #{officer.tac}"
-  %br
-  = "SCI: #{officer.sci}"
-  %br
-  .form-group
-    = f.label :station
-    - # @todo: Clean this up
-    = f.select(:station, options_for_select([['Not Enlisted', nil], ['Captain', 'DIP'], ['First Officer', 'CMD'], ['Doctor', 'MED'], ['Sargent', 'TAC'], ['Scientist', 'SCI']], officer.station.to_s))
-  .form-controls
-    .text-right
-      = f.submit "Assign", class: 'btn btn-default'
+  - if officer.station
+    %strong
+      Station:
+    = officer.station_long_form
+
+  .text-right
+    - if officer.station.present?
+      .form-controls
+        = f.hidden_field(:station, value: nil)
+        = f.submit "Dismiss", class: 'btn btn-default'
+    - else
+      .form-group
+        = f.label :station
+        - # @todo: Clean this up
+        = f.select(:station, options_for_select([['Not Enlisted', nil], ['First Officer (CMD)', 'CMD'], ['Chief Engineer (ENG)', 'ENG'], ['Chief Doctor (MED)', 'MED'], ['Tactical Officer (TAC)', 'TAC'], ['Chief Scientist (SCI)', 'SCI']], officer.station.to_s))
+      .form-controls
+        = f.submit "Assign", class: 'btn btn-default'

@@ -1,11 +1,9 @@
-class CreateOfficers < ActiveRecord::Migration[5.0]
+class CreateSupplies < ActiveRecord::Migration[5.0]
   def change
-    create_table :officers do |t|
+    create_table :supplies do |t|
       t.integer :game_id, index: true
 
-      t.string :station
-
-      t.string :name
+      t.integer :fuel
 
       t.integer :cmd
       t.integer :eng

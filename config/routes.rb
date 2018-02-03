@@ -1,11 +1,14 @@
 Rails.application.routes.draw do
+
+  resources :regions
   devise_for :users
-  
+
   resources :games do
     member do
       post :launch
     end
     resources :officers
+    resources :ships
     resources :challenges do
       post :accept
       post :retreat

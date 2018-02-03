@@ -1,0 +1,54 @@
+.container-fluid
+  .row
+    .col-sm-4
+      %h2
+        Current Game
+      - if @game
+        .bordered.padded
+          Ship:
+          = @game.ships.first.name
+          %br
+          Distance Traveled:
+          = @game.progress
+          %br
+          Points:
+          = @game.points
+          %br
+          .text-right
+            = link_to('End', game_path(id: @game.id), class: 'btn btn-default', method: :delete)
+            = link_to('Continue', game_path(id: @game.id), class: 'btn btn-default')
+      - else
+        .text-left
+          = link_to('New', new_game_path, class: 'btn btn-default btn-lg')
+
+    .col-sm-4
+      %h2
+        Personal Bests
+      - if current_user.high_score
+        %h3
+          High Score:
+        = "#{current_user.high_score} while commanding #{current_user.high_score_ship}"
+        %br
+
+        %h3
+          Furthest Distance Reached
+        = "#{current_user.furthest_journey} while commanding #{current_user.furthest_journey_ship}"
+        %br
+
+    .col-sm-4
+      %h2
+        Global Bests
+
+      %h3
+        High Score:
+      - User.all.order("high_score DESC").last(5).each do |user|
+        - if user.high_score
+          = "#{user.high_score} while commanding #{user.high_score_ship}"
+          %br
+
+      %h3
+        Furthest Distance Reached:
+      - User.all.order("furthest_journey DESC").last(5).each do |user|
+        - if user.furthest_journey
+          = "#{user.furthest_journey} while commanding #{user.furthest_journey_ship}"
+          %br

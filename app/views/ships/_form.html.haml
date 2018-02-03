@@ -1,0 +1,27 @@
+= form_for [@game, ship] do |f|
+  %strong
+    Name:
+  = ship.name
+  %br
+  %strong
+    Stats:
+  %br
+  .text-right
+    = "CMD: #{ship.cmd}"
+    %br
+    = "DIP: #{ship.eng}"
+    %br
+    = "MED: #{ship.med}"
+    %br
+    = "TAC: #{ship.tac}"
+    %br
+    = "SCI: #{ship.sci}"
+  %br
+  .form-controls
+    .text-right
+      - if ship.commanded
+        = f.hidden_field(:commanded, value: nil)
+        = f.submit "Relinquish Command", class: 'btn btn-default'
+      - else
+        = f.hidden_field(:commanded, value: true)
+        = f.submit "Take Command", class: 'btn btn-default'

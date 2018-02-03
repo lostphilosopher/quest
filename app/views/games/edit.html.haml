@@ -1,10 +1,57 @@
-- if  @game.officers.where.not(station: nil).count == 5
-  .text-center
-    = link_to('Launch', launch_game_path(id: @game.id), method: :post, class: 'btn btn-default btn-lg')
-    %br
+- if  @game.officers.where.not(station: '').count == 5 && @game.ships.where(commanded: true).count == 1
+  .container-fluid
+    .row
+      .col-xs-4.col-xs-offset-4
+        .bordered.padded
+          .text-center
+            %h2
+              = @game.ships.where(commanded: true).first.name
+          .text-left
+            %strong
+              Stats:
+          .text-right
+            = render 'games/stats'
+          .text-center
+            = link_to('Launch', launch_game_path(id: @game.id), method: :post, class: 'btn btn-default btn-lg')
 
 .container-fluid
   .row
-    .col-xs-4.col-xs-offset-4
-      - @game.officers.each do |officer|
-        = render 'officers/form', officer: officer
+    .col-sm-4.col-sm-offset-4
+      %h3.text-center
+        Ships
+  .row
+    .col-sm-4.col-sm-offset-1
+      %h4
+        Commanding
+      - @game.ships.where(commanded: true).each do |ship|
+        .bordered.padded
+          = render 'ships/form', ship: ship
+        %br
+    .col-sm-2
+    .col-sm-4
+      %h4
+        Available
+      - @game.ships.where(commanded: nil).each do |ship|
+        .bordered.padded
+          = render 'ships/form', ship: ship
+        %br
+    .row
+      .col-sm-4.col-sm-offset-4
+        %h3.text-center
+          Crew
+    .row
+      .col-sm-4.col-sm-offset-1
+        %h4
+          Enlisted
+        - @game.officers.where.not(station: '').each do |officer|
+          .bordered.padded
+            = render 'officers/form', officer: officer
+          %br
+      .col-sm-2
+      .col-sm-4
+        %h4
+          Available
+        - @game.officers.where(station: [nil, false, '']).each do |officer|
+          .bordered.padded
+            = render 'officers/form', officer: officer
+          %br

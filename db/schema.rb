@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180202235100) do
+ActiveRecord::Schema.define(version: 20180203211524) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 20180202235100) do
     t.string   "trait"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+    t.index ["game_id"], name: "index_challenges_on_game_id", using: :btree
   end
 
   create_table "games", force: :cascade do |t|
@@ -31,6 +32,7 @@ ActiveRecord::Schema.define(version: 20180202235100) do
     t.integer  "points",     default: 0
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+    t.integer  "user_id"
   end
 
   create_table "officers", force: :cascade do |t|
@@ -38,12 +40,50 @@ ActiveRecord::Schema.define(version: 20180202235100) do
     t.string   "station"
     t.string   "name"
     t.integer  "cmd"
-    t.integer  "dip"
+    t.integer  "eng"
     t.integer  "med"
     t.integer  "tac"
     t.integer  "sci"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_officers_on_game_id", using: :btree
+  end
+
+  create_table "regions", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "ship"
+    t.string   "name"
+    t.string   "description"
+    t.integer  "range"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  create_table "ships", force: :cascade do |t|
+    t.integer  "game_id"
+    t.string   "name"
+    t.boolean  "commanded"
+    t.integer  "cmd"
+    t.integer  "eng"
+    t.integer  "med"
+    t.integer  "tac"
+    t.integer  "sci"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_ships_on_game_id", using: :btree
+  end
+
+  create_table "supplies", force: :cascade do |t|
+    t.integer  "game_id"
+    t.integer  "fuel"
+    t.integer  "cmd"
+    t.integer  "eng"
+    t.integer  "med"
+    t.integer  "tac"
+    t.integer  "sci"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_supplies_on_game_id", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
@@ -59,6 +99,10 @@ ActiveRecord::Schema.define(version: 20180202235100) do
     t.inet     "last_sign_in_ip"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
+    t.integer  "high_score"
+    t.string   "high_score_ship"
+    t.integer  "furthest_journey"
+    t.string   "furthest_journey_ship"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end

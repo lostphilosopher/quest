@@ -1,4 +1,6 @@
 class OfficersController < ApplicationController
+  before_action :authenticate_user!
+
   def update
     @officer = Officer.find(params[:id])
 
