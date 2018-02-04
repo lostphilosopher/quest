@@ -21,11 +21,12 @@ class Game < ApplicationRecord
 
   def stats
     {
-      cmd: self.officers.sum(:cmd) + self.ships.sum(:cmd) + self.attribute_from_station(:cmd),
-      eng: self.officers.sum(:eng) + self.ships.sum(:eng) + self.attribute_from_station(:eng),
-      med: self.officers.sum(:med) + self.ships.sum(:med) + self.attribute_from_station(:med),
-      tac: self.officers.sum(:tac) + self.ships.sum(:tac) + self.attribute_from_station(:tac),
-      sci: self.officers.sum(:sci) + self.ships.sum(:sci) + self.attribute_from_station(:sci)
+      # cmd: self.officers.sum(:cmd) + self.ships.sum(:cmd) + self.attribute_from_station(:cmd),
+      cmd: self.officers.sum(:cmd) + self.ships.sum(:cmd),
+      eng: self.officers.sum(:eng) + self.ships.sum(:eng),
+      med: self.officers.sum(:med) + self.ships.sum(:med),
+      tac: self.officers.sum(:tac) + self.ships.sum(:tac),
+      sci: self.officers.sum(:sci) + self.ships.sum(:sci)
     }.freeze
   end
 

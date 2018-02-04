@@ -1,12 +1,18 @@
 .container-fluid.chrome
   .row
+    .col-xs-8.col-xs-offset-2.game-alerts
+      - if flash[:game]
+        %strong
+          = "#{@game.officers.find_by(station: 'CMD').name}: "
+        = "\"#{flash[:game]}\""
+  .row
     .col-sm-2
-      %strong
-        Ship:
-      %br
-      .text-right
-        = @game.ships.first.name
-      %br
+      .bordered.padded
+        %h4
+          = @game.ships.first.name
+        Captain:
+        %br
+        = current_user.player.name
 
       %strong
         Stats:
@@ -48,17 +54,26 @@
           %br
     .col-sm-2
       .text-center
-        - unless @challenge
-          = link_to('Engage Engines', game_path(id: @game.id, params: { direction: 'forward' }), class: 'btn btn-default', 'data-turbolinks' => false)
-          %br
-          %br
+        - active = (@challenge || @game.supply.fuel < 1) ? 'disabled' : ''
+        = link_to('Engage Engines', game_path(id: @game.id, params: { direction: 'forward' }), class: "btn btn-default #{active}", 'data-turbolinks' => false)
+        %br
+        %br
       %strong
         Fuel:
       %br
       .text-right
-        = "#{@game.supply.fuel}/100"
+        = "#{@game.supply.fuel}/#{@settings.max_fuel}"
       .progress
-        .progress-bar{role: "progressbar", aria: {valuenow: "#{@game.supply.fuel}", valuemin: "0", valuemax: "100"}, style: "width: #{@game.supply.fuel}%" }
+        .progress-bar{role: "progressbar", aria: {valuenow: "#{@game.supply.fuel}", valuemin: "0", valuemax: "#{@settings.max_fuel}"}, style: "width: #{@game.supply.fuel * @settings.max_fuel_percentage_correction}%" }
+
+      %strong
+        Shields:
+      %br
+      .text-right
+        = "#{@game.supply.shields}/#{@settings.max_shields}"
+      .progress
+        .progress-bar{role: "progressbar", aria: {valuenow: "#{@game.supply.shields}", valuemin: "0", valuemax: "#{@settings.max_shields}"}, style: "width: #{@game.supply.shields * @settings.max_shields_percentage_correction}%" }
+
       %br
       .text-left.bordered.padded
         %strong
@@ -68,7 +83,7 @@
         %br
         %strong
           Distance Traveled:
-        = @game.progress
+        = "#{@game.progress} units"
         %br
         %strong
           Points:

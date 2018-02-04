@@ -52,13 +52,16 @@ class Supply < ApplicationRecord
   private
 
   def roll
+    min = settings.supply_min
+    max = settings.supply_max
     update({
-      fuel: 100,
-      cmd: rand(15..25),
-      eng: rand(15..25),
-      med: rand(15..25),
-      tac: rand(15..25),
-      sci: rand(15..25)
+      fuel: settings.max_fuel,
+      shields: settings.max_shields,
+      cmd: rand(min..max),
+      eng: rand(min..max),
+      med: rand(min..max),
+      tac: rand(min..max),
+      sci: rand(min..max)
     })
   end
 
@@ -68,5 +71,7 @@ class Supply < ApplicationRecord
     self.med = 0 if (self.med && self.med < 0)
     self.tac = 0 if (self.tac && self.tac < 0)
     self.sci = 0 if (self.sci && self.sci < 0)
+    self.fuel = 0 if (self.fuel && self.fuel < 0)
+    self.shields = 0 if (self.shields && self.shields < 0)
   end
 end

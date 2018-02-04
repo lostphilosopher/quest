@@ -1,0 +1,9 @@
+= form_for(settings) do |f|
+  - fields = Setting.column_names
+  - fields = fields - ['id', 'created_at', 'updated_at']
+  - fields.each do |field|
+    .form-group
+      = f.label field
+      = f.number_field field
+  .form-controls
+    = f.submit "Update", class: 'btn btn-default'

@@ -4,6 +4,7 @@ class CreateSupplies < ActiveRecord::Migration[5.0]
       t.integer :game_id, index: true
 
       t.integer :fuel
+      t.integer :shields
 
       t.integer :cmd
       t.integer :eng

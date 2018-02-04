@@ -1,0 +1,32 @@
+.container-fluid
+  .row
+    .col-xs-4.col-xs-offset-4
+      .bordered.padded
+        %p
+          %strong
+            Urgent Dispatch
+          %br
+          Attn: High Command
+
+        %p
+          We regret to report that
+          = "#{@game.ships.first.name} christened at #{localize(@game.created_at, format: :long)} was lost with all hands."
+
+        %p
+          = "#{@game.ships.first.name} was last reported #{@game.progress - 1} units from Alpha Dock."
+
+        %p
+          Included among the dead are noted officers:
+          %br
+          - @game.officers.each do |officer|
+            = "#{officer.name}, #{officer.station}"
+            %br
+          = "#{current_user.player.name}, Captain"
+          %br
+
+        %p
+          Their sacrifice will not be forgotten.
+
+      %br
+      .text-center
+        = link_to('Acknowledge', game_path(id: @game.id), class: 'btn btn-default', method: :delete)

@@ -31,6 +31,6 @@
       .form-group
         = f.label :station
         - # @todo: Clean this up
-        = f.select(:station, options_for_select([['Not Enlisted', nil], ['First Officer (CMD)', 'CMD'], ['Chief Engineer (ENG)', 'ENG'], ['Chief Doctor (MED)', 'MED'], ['Tactical Officer (TAC)', 'TAC'], ['Chief Scientist (SCI)', 'SCI']], officer.station.to_s))
+        = f.select(:station, options_for_select(officer.options, officer.station.to_s))
       .form-controls
         = f.submit "Assign", class: 'btn btn-default'

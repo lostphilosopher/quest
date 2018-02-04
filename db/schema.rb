@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180203211524) do
+ActiveRecord::Schema.define(version: 20180204071730) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,6 +49,14 @@ ActiveRecord::Schema.define(version: 20180203211524) do
     t.index ["game_id"], name: "index_officers_on_game_id", using: :btree
   end
 
+  create_table "players", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_players_on_user_id", using: :btree
+  end
+
   create_table "regions", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "ship"
@@ -57,6 +65,25 @@ ActiveRecord::Schema.define(version: 20180203211524) do
     t.integer  "range"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+  end
+
+  create_table "settings", force: :cascade do |t|
+    t.integer  "encoutering_challenge",             default: 70
+    t.integer  "challenge_bump",                    default: 150
+    t.integer  "failure_point_divisor",             default: 2
+    t.integer  "retreat_points_divisor",            default: 1
+    t.integer  "retreat_progress_cost",             default: 2
+    t.integer  "officers_to_choose_from",           default: 10
+    t.integer  "ships_to_choose_from",              default: 3
+    t.integer  "refuel_countdown_hours",            default: 24
+    t.integer  "max_fuel",                          default: 100
+    t.integer  "max_shields",                       default: 100
+    t.integer  "supply_min",                        default: 5
+    t.integer  "supply_max",                        default: 10
+    t.integer  "max_fuel_percentage_correction",    default: 1
+    t.integer  "max_shields_percentage_correction", default: 1
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
   end
 
   create_table "ships", force: :cascade do |t|
@@ -76,6 +103,7 @@ ActiveRecord::Schema.define(version: 20180203211524) do
   create_table "supplies", force: :cascade do |t|
     t.integer  "game_id"
     t.integer  "fuel"
+    t.integer  "shields"
     t.integer  "cmd"
     t.integer  "eng"
     t.integer  "med"
@@ -103,6 +131,7 @@ ActiveRecord::Schema.define(version: 20180203211524) do
     t.string   "high_score_ship"
     t.integer  "furthest_journey"
     t.string   "furthest_journey_ship"
+    t.boolean  "admin"
     t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end

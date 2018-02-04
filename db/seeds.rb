@@ -9,7 +9,8 @@
 if Rails.env.development?
   u = User.new(
     email: 'user@example.com',
-    password: 'Example1'
+    password: 'Example1',
+    admin: true
   )
   u.save
 end

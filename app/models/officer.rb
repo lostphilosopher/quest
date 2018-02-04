@@ -3,6 +3,17 @@ class Officer < ApplicationRecord
 
   after_create :roll
 
+  def options
+    array = []
+    array << ['Not Enlisted', nil]
+    array << ['First Officer (CMD)', 'CMD'] if game.officers.where(station: 'CMD').empty?
+    array << ['Chief Engineer (ENG)', 'ENG'] if game.officers.where(station: 'ENG').empty?
+    array << ['Chief Doctor (MED)', 'MED'] if game.officers.where(station: 'MED').empty?
+    array << ['Tactical Officer (TAC)', 'TAC'] if game.officers.where(station: 'TAC').empty?
+    array << ['Chief Scientist (SCI)', 'SCI'] if game.officers.where(station: 'SCI').empty?
+    array
+  end
+
   def attribute_from_station
     game.stats[self.station.downcase.to_sym]
   end

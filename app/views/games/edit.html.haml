@@ -1,16 +1,15 @@
 - if  @game.officers.where.not(station: '').count == 5 && @game.ships.where(commanded: true).count == 1
   .container-fluid
     .row
-      .col-xs-4.col-xs-offset-4
+      .col-sm-4.col-sm-offset-4
         .bordered.padded
           .text-center
             %h2
               = @game.ships.where(commanded: true).first.name
-          .text-left
             %strong
-              Stats:
-          .text-right
-            = render 'games/stats'
+              Captain
+            %br
+            = current_user.player.name
           .text-center
             = link_to('Launch', launch_game_path(id: @game.id), method: :post, class: 'btn btn-default btn-lg')
 

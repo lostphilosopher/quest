@@ -1,11 +1,14 @@
 Rails.application.routes.draw do
 
+  resources :settings
+  resources :players
   resources :regions
   devise_for :users
 
   resources :games do
     member do
       post :launch
+      get :end
     end
     resources :officers
     resources :ships

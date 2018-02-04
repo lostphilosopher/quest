@@ -12,8 +12,14 @@ a {
   color: #000000;
 }
 
+.game-alerts {
+  height: 18px;
+  min-height: 16px;
+  background: #32CD32;
+  color: #000000;
+}
 #viewscreen {
-  min-height: 320px;
+  min-height: 350px;
   display: block;
 }
 .bordered {
