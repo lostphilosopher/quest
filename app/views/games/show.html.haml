@@ -19,22 +19,21 @@
       %br
       .text-right
         = render 'games/stats'
-      %br
 
-      %strong
-        Resources:
-      %br
-      .text-right
-        = "Morale: #{@game.supply.cmd}"
+      .bordered.padded
+        %strong
+          Resources:
         %br
-        = "Spare Parts: #{@game.supply.eng}"
-        %br
-        = "Medicine: #{@game.supply.med}"
-        %br
-        = "Ammo: #{@game.supply.tac}"
-        %br
-        = "Equipment: #{@game.supply.sci}"
-      %br
+        .text-right
+          = "Morale: #{@game.supply.cmd}/#{@settings.supply_max}"
+          %br
+          = "Parts: #{@game.supply.eng}/#{@settings.supply_max}"
+          %br
+          = "Meds: #{@game.supply.med}/#{@settings.supply_max}"
+          %br
+          = "Ammo: #{@game.supply.tac}/#{@settings.supply_max}"
+          %br
+          = "Labs: #{@game.supply.sci}/#{@settings.supply_max}"
 
     #viewscreen.col-sm-8.bordered{ data: { challenge: "#{@challenge}" } }
       - unless @challenge
@@ -55,7 +54,14 @@
     .col-sm-2
       .text-center
         - active = (@challenge || @game.supply.fuel < 1) ? 'disabled' : ''
-        = link_to('Engage Engines', game_path(id: @game.id, params: { direction: 'forward' }), class: "btn btn-default #{active}", 'data-turbolinks' => false)
+        = link_to('Engage Engines', game_path(id: @game.id, params: { direction: 'forward' }), class: "btn btn-default #{active} game-button", 'data-turbolinks' => false)
+        %br
+        = link_to('Star Base', starbase_game_path, class: "btn btn-default #{active} game-button")
+        %br
+        = link_to('Captain\'s Log', discoveries_path, class: "btn btn-default #{active} game-button")
+        %br
+        - active = (@challenge || @game.supply.fuel < 1 || !@game.supply.can_repair? || @game.supply.shields >= @settings.max_shields) ? 'disabled' : ''
+        = link_to('Repair', repair_game_path, class: "btn btn-default #{active} game-button", method: :post, 'data-turbolinks' => false)
         %br
         %br
       %strong
@@ -74,20 +80,8 @@
       .progress
         .progress-bar{role: "progressbar", aria: {valuenow: "#{@game.supply.shields}", valuemin: "0", valuemax: "#{@settings.max_shields}"}, style: "width: #{@game.supply.shields * @settings.max_shields_percentage_correction}%" }
 
-      %br
-      .text-left.bordered.padded
-        %strong
-          Region of Space
-        %br
-        = "#{@region.name}"
-        %br
-        %strong
-          Distance Traveled:
-        = "#{@game.progress} units"
-        %br
-        %strong
-          Points:
-        = @game.points
+      .bordered.padded
+        = "[#{@region.name}] #{@game.progress} units from Star Base"
 
   .row
     .col-sm-1

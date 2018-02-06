@@ -1,0 +1,6 @@
+= form_for record do |f|
+  .form-group
+    = f.label :voyage_name
+    = f.text_field :voyage_name
+  .form-controls
+    = f.submit 'Add Voyage to Official Logs', class: 'btn btn-default'

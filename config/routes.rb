@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :discoveries
+  resources :records
   resources :settings
   resources :players
   resources :regions
@@ -9,6 +11,8 @@ Rails.application.routes.draw do
     member do
       post :launch
       get :end
+      get :starbase
+      post :repair
     end
     resources :officers
     resources :ships

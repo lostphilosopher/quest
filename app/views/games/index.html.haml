@@ -32,27 +32,29 @@
 
       %h3
         High Score:
-      - User.all.order("high_score DESC").last(5).each do |user|
-        - if user.high_score
-          = "#{current_user.player.name} #{user.high_score} points while commanding #{user.high_score_ship}"
-          %br
+      - Record.all.order("points DESC").last(5).each do |record|
+        = "#{record.captain_name} #{record.points} points while commanding #{record.ship_name}"
+        %br
 
       %h3
         Furthest Distance Reached:
-      - User.all.order("furthest_journey DESC").last(5).each do |user|
-        - if user.furthest_journey
-          = "#{current_user.player.name} #{user.furthest_journey} units while commanding #{user.furthest_journey_ship}"
-          %br
+      - Record.all.order("progress DESC").last(5).each do |record|
+        = "#{record.captain_name} #{record.progress} points while commanding #{record.ship_name}"
+        %br
+        %br
 
       %h2
         Personal Bests
-      - if current_user.high_score
-        %h3
-          High Score:
-        = "#{current_user.player.name} #{current_user.high_score} points while commanding #{current_user.high_score_ship}"
+
+      %h3
+        High Score:
+      - Record.where(player_id: current_user.player.id).order("points DESC").last(5).each do |record|
+        = "#{record.captain_name} #{record.points} points while commanding #{record.ship_name}"
         %br
 
-        %h3
-          Furthest Distance Reached
-        = "#{current_user.player.name} #{current_user.furthest_journey} points while commanding #{current_user.furthest_journey_ship}"
+      %h3
+        Furthest Distance Reached:
+      - Record.where(player_id: current_user.player.id).order("progress DESC").last(5).each do |record|
+        = "#{record.captain_name} #{record.progress} points while commanding #{record.ship_name}"
+        %br
         %br

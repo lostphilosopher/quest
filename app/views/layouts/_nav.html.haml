@@ -13,6 +13,11 @@
         - if current_user
           %li
             = link_to 'Menu', games_path
+          - if current_user.game
+            %li
+              = link_to 'Continue', game_path(id: current_user.game.id)
+          %li
+            = link_to 'Discoveries', discoveries_path
           %li
             = link_to 'Settings', edit_setting_path(id: @settings.id)
           %li

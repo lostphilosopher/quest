@@ -1,0 +1,12 @@
+= form_for(discovery) do |f|
+  %strong
+    Type
+  = "#{discovery.category}"
+  .form-group
+    = f.label :name
+    = f.text_field :name
+  .form-group
+    = f.label :description
+    = f.text_field :description
+  .form-controls
+    = f.submit 'Submit'

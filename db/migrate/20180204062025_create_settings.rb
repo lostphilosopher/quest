@@ -3,6 +3,7 @@ class CreateSettings < ActiveRecord::Migration[5.0]
     create_table :settings do |t|
       # Chances, out of 100
       t.integer :encoutering_challenge, default: 70
+      t.integer :discovery_chance, default: 10
       # Static Numbers
       t.integer :challenge_bump, default: 150
       t.integer :failure_point_divisor, default: 2
@@ -18,6 +19,8 @@ class CreateSettings < ActiveRecord::Migration[5.0]
       t.integer :supply_max, default: 10
       t.integer :max_fuel_percentage_correction, default: 1
       t.integer :max_shields_percentage_correction, default: 1
+      t.integer :repair_cycle_time, default: 1
+
       t.timestamps
     end
   end

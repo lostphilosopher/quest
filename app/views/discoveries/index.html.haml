@@ -1,0 +1,26 @@
+.container-fluid
+  .row
+    .col-sm-6.col-sm-offset-3
+      - if @game
+        %h2
+          Captain's Log
+        - if @unclaimed_discoveries.present?
+          - @unclaimed_discoveries.each do |discovery|
+            .bordered.padded
+              = render 'discoveries/form', discovery: discovery
+            %br
+        - else
+          No discoveries to log.
+  .row
+    .col-sm-6.col-sm-offset-3
+      %h2
+        Database
+      - if @discoveries
+        - @discoveries.each do |discovery|
+          - if discovery.name && discovery.description
+            .bordered.padded
+              %strong
+                = "#{discovery.name}"
+              %p
+                = "#{discovery.description}"
+            %br

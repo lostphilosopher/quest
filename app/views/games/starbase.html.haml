@@ -1,0 +1,20 @@
+.container-fluid
+  .row
+    .col-xs-6.col-xs-3
+      %h1
+        Starbase
+      = link_to 'Launch', game_path(id: @game.id, params: { launch: 'true' }), class: 'btn btn-default btn-lg'
+      = link_to('End Mission', game_path(id: @game.id), class: 'btn btn-default btn-lg', method: :delete)
+      = link_to('Log Discoveries', discoveries_path, class: 'btn btn-default btn-lg')
+      %br
+      %br
+      .bordered.padded
+        %h2
+          Points:
+          = "#{@game.points}"
+        %h2
+          Progress:
+          = "#{@game.progress}"
+        %h2
+          Discoveries:
+          = "#{@game.discoveries.logged(current_user.player.id).count}" if @game.discoveries

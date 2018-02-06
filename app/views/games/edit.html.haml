@@ -17,6 +17,27 @@
   .row
     .col-sm-4.col-sm-offset-4
       %h3.text-center
+        Crew
+  .row
+    .col-sm-4.col-sm-offset-1
+      %h4
+        Enlisted
+      - @game.officers.where.not(station: '').each do |officer|
+        .bordered.padded
+          = render 'officers/form', officer: officer
+        %br
+    .col-sm-2
+    .col-sm-4
+      %h4
+        Available
+      - @game.officers.where(station: [nil, false, '']).each do |officer|
+        .bordered.padded
+          = render 'officers/form', officer: officer
+        %br
+
+  .row
+    .col-sm-4.col-sm-offset-4
+      %h3.text-center
         Ships
   .row
     .col-sm-4.col-sm-offset-1
@@ -34,23 +55,3 @@
         .bordered.padded
           = render 'ships/form', ship: ship
         %br
-    .row
-      .col-sm-4.col-sm-offset-4
-        %h3.text-center
-          Crew
-    .row
-      .col-sm-4.col-sm-offset-1
-        %h4
-          Enlisted
-        - @game.officers.where.not(station: '').each do |officer|
-          .bordered.padded
-            = render 'officers/form', officer: officer
-          %br
-      .col-sm-2
-      .col-sm-4
-        %h4
-          Available
-        - @game.officers.where(station: [nil, false, '']).each do |officer|
-          .bordered.padded
-            = render 'officers/form', officer: officer
-          %br
