@@ -5,10 +5,8 @@
         %h2
           Captain's Log
         - if @unclaimed_discoveries.present?
-          - @unclaimed_discoveries.each do |discovery|
-            .bordered.padded
-              = render 'discoveries/form', discovery: discovery
-            %br
+          .bordered.padded
+            = render 'discoveries/form', discovery: @unclaimed_discoveries.first
         - else
           No discoveries to log.
   .row

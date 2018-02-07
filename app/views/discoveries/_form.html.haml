@@ -1,12 +1,12 @@
 = form_for(discovery) do |f|
-  %strong
-    Type
-  = "#{discovery.category}"
+  %h3
+    = "#{discovery.category.capitalize}"
   .form-group
     = f.label :name
     = f.text_field :name
   .form-group
     = f.label :description
-    = f.text_field :description
+    = f.text_area :description
   .form-controls
-    = f.submit 'Submit'
+    .text-right
+      = f.submit 'Submit', class: 'btn btn-default'

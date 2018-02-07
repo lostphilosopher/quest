@@ -1,0 +1,14 @@
+- active = (@challenge || @game.supply.fuel < 1) ? 'disabled' : ''
+= link_to('Engage Engines', game_path(id: @game.id, params: { order: 'engage' }), class: "btn btn-default #{active} game-button", 'data-turbolinks' => false)
+%br
+- active = (@challenge || !@game.supply.can_eng? || @game.supply.shields >= @settings.max_shields) ? 'disabled' : ''
+= link_to('Repair', game_path(id: @game.id, params: { order: 'repair' }), class: "btn btn-default #{active} game-button", 'data-turbolinks' => false)
+%br
+- active = (@challenge || !@game.supply.can_sci?) ? 'disabled' : ''
+= link_to('Deploy Probe', game_path(id: @game.id, params: { order: 'probe' }), class: "btn btn-default #{active} game-button")
+%br
+- active = (@challenge || !@game.supply.can_tac?) ? 'disabled' : ''
+= link_to('Full Alert', game_path(id: @game.id, params: { order: 'alert' }), class: "btn btn-default #{active} game-button")
+%br
+- active = (@challenge || !@game.supply.can_med?) ? 'disabled' : ''
+= link_to('Scan for Life', game_path(id: @game.id, params: { order: 'scan' }), class: "btn btn-default #{active} game-button")

@@ -1,0 +1,14 @@
+- active = (@challenge || @game.supply.fuel < 1) ? 'disabled' : ''
+= link_to("Negotiate", game_challenge_accept_path(game_id: @game.id, challenge_id: @challenge.id, params: {tactic: 'CMD'}), method: :post, class: 'btn btn-default game-button')
+%br
+- active = (@challenge || !@game.supply.can_eng? || @game.supply.shields >= @settings.max_shields) ? 'disabled' : ''
+= link_to("Evade", game_challenge_accept_path(game_id: @game.id, challenge_id: @challenge.id, params: {tactic: 'ENG'}), method: :post, class: 'btn btn-default game-button')
+%br
+- active = (@challenge || !@game.supply.can_sci?) ? 'disabled' : ''
+= link_to("Analyze", game_challenge_accept_path(game_id: @game.id, challenge_id: @challenge.id, params: {tactic: 'SCI'}), method: :post, class: 'btn btn-default game-button')
+%br
+- active = (@challenge || !@game.supply.can_tac?) ? 'disabled' : ''
+= link_to("Open Fire", game_challenge_accept_path(game_id: @game.id, challenge_id: @challenge.id, params: {tactic: 'TAC'}), method: :post, class: 'btn btn-default game-button')
+%br
+- active = (@challenge || !@game.supply.can_med?) ? 'disabled' : ''
+= link_to("Study", game_challenge_accept_path(game_id: @game.id, challenge_id: @challenge.id, params: {tactic: 'MED'}), method: :post, class: 'btn btn-default game-button')

@@ -102,7 +102,7 @@ ActiveRecord::Schema.define(version: 20180206010626) do
   end
 
   create_table "settings", force: :cascade do |t|
-    t.integer  "encoutering_challenge",             default: 70
+    t.integer  "encouter_chance",                   default: 70
     t.integer  "discovery_chance",                  default: 10
     t.integer  "challenge_bump",                    default: 150
     t.integer  "failure_point_divisor",             default: 2

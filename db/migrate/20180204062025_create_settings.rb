@@ -2,7 +2,7 @@ class CreateSettings < ActiveRecord::Migration[5.0]
   def change
     create_table :settings do |t|
       # Chances, out of 100
-      t.integer :encoutering_challenge, default: 70
+      t.integer :encouter_chance, default: 70
       t.integer :discovery_chance, default: 10
       # Static Numbers
       t.integer :challenge_bump, default: 150

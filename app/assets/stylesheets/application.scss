@@ -12,14 +12,21 @@ a {
   color: #000000;
 }
 
-.game-alerts {
+.game-alerts-lg {
   height: 18px;
   min-height: 16px;
   background: #32CD32;
   color: #000000;
 }
+.game-alerts-xs {
+  height: 48px;
+  min-height: 16px;
+  background: #32CD32;
+  color: #000000;
+}
+
 #viewscreen {
-  min-height: 375px;
+  min-height: 350px;
   display: block;
 }
 .bordered {

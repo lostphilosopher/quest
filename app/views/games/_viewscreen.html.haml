@@ -1,0 +1,16 @@
+#viewscreen.col-sm-6.bordered{ data: { challenge: "#{@challenge}" } }
+  - unless @challenge
+    .stars
+    .twinkling
+    .clouds
+  .container-fluid
+    .row
+      %br
+      %br
+    .row
+      .col-xs-10.col-xs-offset-1
+        - if @challenge
+          = render 'challenges/detail'
+    .row
+      %br
+      %br

@@ -1,0 +1,9 @@
+- if @challenge
+  = link_to('Retreat', game_challenge_retreat_path(game_id: @game.id, challenge_id: @challenge.id), method: :post, class: 'btn btn-default game-button')
+- else
+  = link_to('Star Base', starbase_game_path, class: "btn btn-default game-button")
+%br
+- active = false ? 'disabled' : ''
+= link_to('Status Report', game_path(id: @game.id, params: { order: 'status' }), class: "btn btn-default #{active} game-button", 'data-turbolinks' => false)
+%br
+= link_to('Captain\'s Log', discoveries_path, class: "btn btn-default game-button")

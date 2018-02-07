@@ -15,41 +15,23 @@
         = render 'games/stats'
 
       .bordered.padded
-        = "[#{@region.name}] #{@game.progress} units from Star Base"
+        .text-center
+          = "#{@region.name}"
+          %br
+          Region
+          %br
+          = "#{@game.progress}"
+          %br
+          Units from Star Base
 
-    #viewscreen.col-sm-6.bordered{ data: { challenge: "#{@challenge}" } }
-      - unless @challenge
-        .stars
-        .twinkling
-        .clouds
-      .container-fluid
-        .row
-          %br
-          %br
-        .row
-          .col-xs-10.col-xs-offset-1
-            - if @challenge
-              = render 'challenges/detail'
-        .row
-          %br
-          %br
+    = render 'games/viewscreen'
 
     .col-sm-2
       .text-center
-        - active = (@challenge || @game.supply.fuel < 1) ? 'disabled' : ''
-        = link_to('Engage Engines', game_path(id: @game.id, params: { order: 'engage' }), class: "btn btn-default #{active} game-button", 'data-turbolinks' => false)
-        %br
-        - active = (@challenge || !@game.supply.can_eng? || @game.supply.shields >= @settings.max_shields) ? 'disabled' : ''
-        = link_to('Repair', game_path(id: @game.id, params: { order: 'repair' }), class: "btn btn-default #{active} game-button", 'data-turbolinks' => false)
-        %br
-        - active = (@challenge || !@game.supply.can_sci?) ? 'disabled' : ''
-        = link_to('Deploy Probe', game_path(id: @game.id, params: { order: 'probe' }), class: "btn btn-default #{active} game-button")
-        %br
-        - active = (@challenge || !@game.supply.can_tac?) ? 'disabled' : ''
-        = link_to('Full Alert', game_path(id: @game.id, params: { order: 'alert' }), class: "btn btn-default #{active} game-button")
-        %br
-        - active = (@challenge || !@game.supply.can_med?) ? 'disabled' : ''
-        = link_to('Scan for Life', game_path(id: @game.id, params: { order: 'scan' }), class: "btn btn-default #{active} game-button")
+        - if @challenge
+          = render 'games/tactical_officer_commands'
+        - else
+          = render 'games/officer_commands'
 
         %br
         %br
@@ -71,13 +53,7 @@
 
     .col-sm-2
       .text-center
-        - active = false ? 'disabled' : ''
-        = link_to('Status Report', game_path(id: @game.id, params: { order: 'status' }), class: "btn btn-default #{active} game-button", 'data-turbolinks' => false)
-        %br
-        - active = @challenge ? 'disabled' : ''
-        = link_to('Star Base', starbase_game_path, class: "btn btn-default #{active} game-button")
-        %br
-        = link_to('Captain\'s Log', discoveries_path, class: "btn btn-default game-button")
+        = render 'games/captain_commands'
         %br
         %br
 
@@ -86,18 +62,9 @@
           Resources:
         %br
         .text-right
-          = "Morale: #{@game.supply.cmd}/#{@settings.supply_max}"
-          %br
-          = "Parts: #{@game.supply.eng}/#{@settings.supply_max}"
-          %br
-          = "Meds: #{@game.supply.med}/#{@settings.supply_max}"
-          %br
-          = "Ammo: #{@game.supply.tac}/#{@settings.supply_max}"
-          %br
-          = "Labs: #{@game.supply.sci}/#{@settings.supply_max}"
+          = render 'games/resources'
   .row
-    .col-xs-6.col-xs-offset-2.game-alerts
-      = "#{flash[:game]}"
+    = render 'games/flash'
   .row
     .col-sm-1
     - @game.officers.each do |officer|

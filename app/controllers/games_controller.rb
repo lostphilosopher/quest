@@ -58,7 +58,7 @@ class GamesController < ApplicationController
     elsif @game.challenges.present?
       flash[:game] = "Sensors detecting a threat, bringing it up now."
       @challenge = @game.challenges.first
-    elsif params[:order].present? && params[:order] == 'engage' && @settings.encoutering_challenge >= rand(1..100)
+    elsif params[:order].present? && params[:order] == 'engage' && @settings.encouter_chance >= rand(1..100)
       flash[:game] = "Sensors detecting a threat, bringing it up now."
       @challenge = Challenge.create(game_id: @game.id)
     elsif params[:order].present? && params[:order] == 'engage' && (@settings.discovery_chance >= rand(1..100))
