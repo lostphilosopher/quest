@@ -34,9 +34,6 @@
           %br
           %br
 
-
-
-
     .col-sm-2
       .text-center
         - active = (@challenge || @game.supply.fuel < 1) ? 'disabled' : ''
@@ -98,7 +95,9 @@
           = "Ammo: #{@game.supply.tac}/#{@settings.supply_max}"
           %br
           = "Labs: #{@game.supply.sci}/#{@settings.supply_max}"
-
+  .row
+    .col-xs-6.col-xs-offset-2.game-alerts
+      = "#{flash[:game]}"
   .row
     .col-sm-1
     - @game.officers.each do |officer|
