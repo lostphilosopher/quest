@@ -13,10 +13,16 @@ class ChallengesController < ApplicationController
       bonus = rand(0..1) # tie breaker
     end
 
-    player_value = @game.stats[@challenge.trait_sym] + bonus
+    if @game.supply.in_alert?
+      crit_bonus = bonus * 2
+    else
+      crit_bonus = 0
+    end
+
+    player_value = @game.stats[@challenge.trait_sym] + bonus + crit_bonus
     challenge_value = @challenge.points
 
-    logger.debug "[ChallengeReadout] P: #{player_value} C: #{challenge_value} L: #{@challenge.level} T: #{@challenge.trait} B: #{bonus}"
+    logger.debug "[ChallengeReadout] P: #{player_value} C: #{challenge_value} L: #{@challenge.level} T: #{@challenge.trait} B: #{bonus} CB: #{crit_bonus}"
 
     if player_value > challenge_value
       flash[:game] = "Tactic successful. All clear."

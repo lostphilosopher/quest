@@ -12,7 +12,12 @@ class CreateSupplies < ActiveRecord::Migration[5.0]
       t.integer :tac
       t.integer :sci
 
-      t.timestamp :last_repaired_at
+      t.timestamp :last_eng_at
+      t.timestamp :last_sci_at
+      t.timestamp :last_med_at
+      t.timestamp :last_tac_at
+      t.timestamp :last_cmd_at
+      
       t.timestamps
     end
   end

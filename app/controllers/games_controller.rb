@@ -17,32 +17,66 @@ class GamesController < ApplicationController
       return redirect_to end_game_path
     end
 
-    x = rand(1..100)
-    if @game.supply.fuel < 1
-      flash[:game] = "We're out of fuel. It will take 24 hours for the engines to recharge."
-    elsif params[:launch].present?
+    if params[:order].present? && params[:order] == 'launch'
       flash[:game] = "We've left space dock."
       @game.update(progress: 0)
+    elsif params[:order].present? && params[:order] == 'probe'
+      @game.supply.update(last_sci_at: Time.zone.now)
+      if @game.stats[:sci] > rand(1..100)
+        flash[:game] = "We found something!"
+        @discovery = Discovery.create(
+          player_id: current_user.player.id,
+          game_id: @game.id,
+          user_id: current_user.id
+        )
+      else
+        flash[:game] = "There's nothing here."
+      end
+    elsif params[:order].present? && params[:order] == 'scan'
+      @game.supply.update(last_med_at: Time.zone.now)
+      if @game.stats[:med] > rand(1..100)
+        flash[:game] = "There's something out there!"
+        @discovery = Discovery.create(
+          player_id: current_user.player.id,
+          game_id: @game.id,
+          user_id: current_user.id
+        )
+      else
+        flash[:game] = "Nothing found."
+      end
+    elsif params[:order].present? && params[:order] == 'repair'
+      @game.supply.update(last_eng_at: Time.zone.now)
+      @game.supply.repair(10)
+      flash[:game] = "Repairs made."
+    elsif params[:order].present? && params[:order] == 'status'
+      return redirect_to status_game_path(id: @game.id)
+    elsif params[:order].present? && params[:order] == 'alert'
+      @game.supply.update(last_tac_at: Time.zone.now)
+      flash[:game] = "Full alert!"
+    elsif @game.supply.fuel < 1
+      flash[:game] = "We're out of fuel. It will take 24 hours for the engines to recharge."
     elsif @game.challenges.present?
       flash[:game] = "Sensors detecting a threat, bringing it up now."
       @challenge = @game.challenges.first
-    elsif params[:direction].present? && x > @settings.encoutering_challenge
+    elsif params[:order].present? && params[:order] == 'engage' && @settings.encoutering_challenge >= rand(1..100)
       flash[:game] = "Sensors detecting a threat, bringing it up now."
       @challenge = Challenge.create(game_id: @game.id)
-    elsif params[:direction].present? && (@settings.discovery_chance <= rand(1..100))
+    elsif params[:order].present? && params[:order] == 'engage' && (@settings.discovery_chance >= rand(1..100))
       flash[:game] = "We've made a discovery Captain!"
-      Discovery.create(
+      @discovery = Discovery.create(
         player_id: current_user.player.id,
         game_id: @game.id,
         user_id: current_user.id
       )
-    elsif params[:direction].present?
+      @game.update(progress: @game.progress + 1)
+      @game.supply.expend_fuel(1)
+    elsif params[:order].present? && params[:order] == 'engage'
       msg = [
-        "We\'ve arrived, awaiting orders.",
+        "We\'ve arrived, awaiting order.",
         "Done.",
         "Complete",
         "All stations ready",
-        "Your orders Captain?",
+        "Your order Captain?",
         "Where to?",
         "Standing by Captain."
       ].sample
@@ -52,6 +86,10 @@ class GamesController < ApplicationController
     else
       flash[:game] = flash[:game]
     end
+  end
+
+  def status
+    @game = Game.find(params[:id])
   end
 
   def index
@@ -96,13 +134,6 @@ class GamesController < ApplicationController
     redirect_to edit_game_path(id: @game.id)
   end
 
-  def repair
-    @game = Game.find(params[:id])
-    @game.supply.repair(10)
-
-    redirect_to game_path(id: @game.id)
-  end
-
   def launch
     @game = Game.find(params[:id])
 
@@ -127,7 +158,7 @@ class GamesController < ApplicationController
       ship.delete unless ship.commanded
     end
 
-    flash[:game] = "We've left space dock, awaiting orders Captain."
+    flash[:game] = "We've left space dock, awaiting order Captain."
     redirect_to game_path(id: @game.id)
   end
 

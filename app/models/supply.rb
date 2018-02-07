@@ -57,14 +57,33 @@ class Supply < ApplicationRecord
 
     repaired_value = settings.max_shields if (repaired_value > settings.max_shields)
     update(
-      last_repaired_at: Time.zone.now,
+      last_eng_at: Time.zone.now,
       shields: repaired_value
     )
   end
 
-  def can_repair?
-    return true unless last_repaired_at
-    Time.zone.now > (last_repaired_at + settings.repair_cycle_time.hours)
+  def in_alert?
+    last_tac_at && (Time.zone.now < (last_tac_at + 3.minutes))
+  end
+
+  def can_tac?
+    return true unless last_tac_at
+    Time.zone.now > (last_tac_at + settings.tac_cycle_time.hours)
+  end
+
+  def can_eng?
+    return true unless last_eng_at
+    Time.zone.now > (last_eng_at + settings.eng_cycle_time.hours)
+  end
+
+  def can_sci?
+    return true unless last_sci_at
+    Time.zone.now > (last_sci_at + settings.sci_cycle_time.hours)
+  end
+
+  def can_med?
+    return true unless last_med_at
+    Time.zone.now > (last_med_at + settings.med_cycle_time.hours)
   end
 
   def reup

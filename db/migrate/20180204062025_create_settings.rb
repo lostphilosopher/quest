@@ -19,7 +19,11 @@ class CreateSettings < ActiveRecord::Migration[5.0]
       t.integer :supply_max, default: 10
       t.integer :max_fuel_percentage_correction, default: 1
       t.integer :max_shields_percentage_correction, default: 1
-      t.integer :repair_cycle_time, default: 1
+      t.integer :cmd_cycle_time, default: 1
+      t.integer :eng_cycle_time, default: 1
+      t.integer :sci_cycle_time, default: 1
+      t.integer :med_cycle_time, default: 1
+      t.integer :tac_cycle_time, default: 1
 
       t.timestamps
     end

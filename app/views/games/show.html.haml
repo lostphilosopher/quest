@@ -1,11 +1,5 @@
 .container-fluid.chrome
   .row
-    .col-xs-8.col-xs-offset-2.game-alerts
-      - if flash[:game]
-        %strong
-          = "#{@game.officers.find_by(station: 'CMD').name}: "
-        = "\"#{flash[:game]}\""
-  .row
     .col-sm-2
       .bordered.padded
         %h4
@@ -21,21 +15,9 @@
         = render 'games/stats'
 
       .bordered.padded
-        %strong
-          Resources:
-        %br
-        .text-right
-          = "Morale: #{@game.supply.cmd}/#{@settings.supply_max}"
-          %br
-          = "Parts: #{@game.supply.eng}/#{@settings.supply_max}"
-          %br
-          = "Meds: #{@game.supply.med}/#{@settings.supply_max}"
-          %br
-          = "Ammo: #{@game.supply.tac}/#{@settings.supply_max}"
-          %br
-          = "Labs: #{@game.supply.sci}/#{@settings.supply_max}"
+        = "[#{@region.name}] #{@game.progress} units from Star Base"
 
-    #viewscreen.col-sm-8.bordered{ data: { challenge: "#{@challenge}" } }
+    #viewscreen.col-sm-6.bordered{ data: { challenge: "#{@challenge}" } }
       - unless @challenge
         .stars
         .twinkling
@@ -51,17 +33,27 @@
         .row
           %br
           %br
+
+
+
+
     .col-sm-2
       .text-center
         - active = (@challenge || @game.supply.fuel < 1) ? 'disabled' : ''
-        = link_to('Engage Engines', game_path(id: @game.id, params: { direction: 'forward' }), class: "btn btn-default #{active} game-button", 'data-turbolinks' => false)
+        = link_to('Engage Engines', game_path(id: @game.id, params: { order: 'engage' }), class: "btn btn-default #{active} game-button", 'data-turbolinks' => false)
         %br
-        = link_to('Star Base', starbase_game_path, class: "btn btn-default #{active} game-button")
+        - active = (@challenge || !@game.supply.can_eng? || @game.supply.shields >= @settings.max_shields) ? 'disabled' : ''
+        = link_to('Repair', game_path(id: @game.id, params: { order: 'repair' }), class: "btn btn-default #{active} game-button", 'data-turbolinks' => false)
         %br
-        = link_to('Captain\'s Log', discoveries_path, class: "btn btn-default #{active} game-button")
+        - active = (@challenge || !@game.supply.can_sci?) ? 'disabled' : ''
+        = link_to('Deploy Probe', game_path(id: @game.id, params: { order: 'probe' }), class: "btn btn-default #{active} game-button")
         %br
-        - active = (@challenge || @game.supply.fuel < 1 || !@game.supply.can_repair? || @game.supply.shields >= @settings.max_shields) ? 'disabled' : ''
-        = link_to('Repair', repair_game_path, class: "btn btn-default #{active} game-button", method: :post, 'data-turbolinks' => false)
+        - active = (@challenge || !@game.supply.can_tac?) ? 'disabled' : ''
+        = link_to('Full Alert', game_path(id: @game.id, params: { order: 'alert' }), class: "btn btn-default #{active} game-button")
+        %br
+        - active = (@challenge || !@game.supply.can_med?) ? 'disabled' : ''
+        = link_to('Scan for Life', game_path(id: @game.id, params: { order: 'scan' }), class: "btn btn-default #{active} game-button")
+
         %br
         %br
       %strong
@@ -80,8 +72,32 @@
       .progress
         .progress-bar{role: "progressbar", aria: {valuenow: "#{@game.supply.shields}", valuemin: "0", valuemax: "#{@settings.max_shields}"}, style: "width: #{@game.supply.shields * @settings.max_shields_percentage_correction}%" }
 
+    .col-sm-2
+      .text-center
+        - active = false ? 'disabled' : ''
+        = link_to('Status Report', game_path(id: @game.id, params: { order: 'status' }), class: "btn btn-default #{active} game-button", 'data-turbolinks' => false)
+        %br
+        - active = @challenge ? 'disabled' : ''
+        = link_to('Star Base', starbase_game_path, class: "btn btn-default #{active} game-button")
+        %br
+        = link_to('Captain\'s Log', discoveries_path, class: "btn btn-default game-button")
+        %br
+        %br
+
       .bordered.padded
-        = "[#{@region.name}] #{@game.progress} units from Star Base"
+        %strong
+          Resources:
+        %br
+        .text-right
+          = "Morale: #{@game.supply.cmd}/#{@settings.supply_max}"
+          %br
+          = "Parts: #{@game.supply.eng}/#{@settings.supply_max}"
+          %br
+          = "Meds: #{@game.supply.med}/#{@settings.supply_max}"
+          %br
+          = "Ammo: #{@game.supply.tac}/#{@settings.supply_max}"
+          %br
+          = "Labs: #{@game.supply.sci}/#{@settings.supply_max}"
 
   .row
     .col-sm-1

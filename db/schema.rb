@@ -118,7 +118,11 @@ ActiveRecord::Schema.define(version: 20180206010626) do
     t.integer  "supply_max",                        default: 10
     t.integer  "max_fuel_percentage_correction",    default: 1
     t.integer  "max_shields_percentage_correction", default: 1
-    t.integer  "repair_cycle_time",                 default: 1
+    t.integer  "cmd_cycle_time",                    default: 1
+    t.integer  "eng_cycle_time",                    default: 1
+    t.integer  "sci_cycle_time",                    default: 1
+    t.integer  "med_cycle_time",                    default: 1
+    t.integer  "tac_cycle_time",                    default: 1
     t.datetime "created_at",                                      null: false
     t.datetime "updated_at",                                      null: false
   end
@@ -146,9 +150,13 @@ ActiveRecord::Schema.define(version: 20180206010626) do
     t.integer  "med"
     t.integer  "tac"
     t.integer  "sci"
-    t.datetime "last_repaired_at"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "last_eng_at"
+    t.datetime "last_sci_at"
+    t.datetime "last_med_at"
+    t.datetime "last_tac_at"
+    t.datetime "last_cmd_at"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
     t.index ["game_id"], name: "index_supplies_on_game_id", using: :btree
   end
 

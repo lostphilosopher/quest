@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       post :launch
       get :end
       get :starbase
-      post :repair
+      get :status
     end
     resources :officers
     resources :ships
