@@ -18,8 +18,3 @@
       %strong
         = "#{@game.officers.find_by(station: 'CMD').name}: "
       "Orders Captain?"
-      .text-right
-        - ['CMD', 'ENG', 'MED', 'TAC', 'SCI'].each do |tactic|
-          - if @game.supply.send(tactic.downcase.to_sym) > 0
-            = link_to("#{tactic}", game_challenge_accept_path(game_id: @game.id, challenge_id: @challenge.id, params: {tactic: tactic}), method: :post, class: 'btn btn-default btn-sm')
-        = link_to('Retreat', game_challenge_retreat_path(game_id: @game.id, challenge_id: @challenge.id), method: :post, class: 'btn btn-default btn-sm')

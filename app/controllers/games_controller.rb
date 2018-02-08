@@ -172,6 +172,7 @@ class GamesController < ApplicationController
 
   def starbase
     @game = Game.find(params[:id])
+    @discoveries = Discovery.where(logged: true, game_id: @game.id)
     @game.supply.reup
   end
 
