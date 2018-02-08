@@ -1,2 +1,3 @@
 web: bundle exec puma -C config/puma.rb
-release: rake db:create && rake db:migrate
+before_script: rake db:create
+release: rake db:migrate
