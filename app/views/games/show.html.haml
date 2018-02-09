@@ -1,6 +1,6 @@
 .container-fluid.chrome
   .row
-    .col-sm-2
+    .col-md-2
       .bordered.padded
         %h4
           = @game.ships.first.name
@@ -26,7 +26,7 @@
 
     = render 'games/viewscreen'
 
-    .col-sm-2
+    .col-md-2
       .text-center
         - if @challenge
           = render 'games/tactical_officer_commands'
@@ -51,7 +51,7 @@
       .progress
         .progress-bar{role: "progressbar", aria: {valuenow: "#{@game.supply.shields}", valuemin: "0", valuemax: "#{@settings.max_shields}"}, style: "width: #{@game.supply.shields * @settings.max_shields_percentage_correction}%" }
 
-    .col-sm-2
+    .col-md-2
       .text-center
         = render 'games/captain_commands'
         %br
@@ -66,7 +66,7 @@
   .row
     = render 'games/flash'
   .row
-    .col-sm-1
+    .col-md-1
     - @game.officers.each do |officer|
       .col-sm-2
         .text-center
