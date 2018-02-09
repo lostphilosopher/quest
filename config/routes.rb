@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :messages
   resources :discoveries
   resources :records
   resources :settings

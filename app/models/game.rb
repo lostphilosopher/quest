@@ -4,6 +4,7 @@ class Game < ApplicationRecord
   has_many :ships, dependent: :destroy
   has_many :challenges, dependent: :destroy
   has_many :discoveries
+  has_many :messages, dependent: :destroy
   has_one :supply, dependent: :destroy
 
   before_save :prevent_negatives

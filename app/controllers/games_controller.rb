@@ -9,7 +9,11 @@ class GamesController < ApplicationController
     # 24 hour refuel
     if Time.zone.now > (@game.updated_at + @settings.refuel_countdown_hours.hours)
       @game.supply.update(fuel: @settings.max_fuel)
-      flash[:game] = "Engines recharged! Standing by."
+      Message.create(
+        source: @game.officers.sample.name,
+        body: 'Engines recharged! Standing by.',
+        game_id: @game.id
+      )
     end
 
     # Game Over!!!
@@ -18,21 +22,43 @@ class GamesController < ApplicationController
     end
 
     if params[:order].present? && params[:order] == 'launch'
-      flash[:game] = "We've left space dock."
+      Message.create(
+        source: @game.officers.sample.name,
+        body: "We've left Space Dock.",
+        game_id: @game.id
+      )
       @game.update(progress: 0)
     elsif params[:order].present? && params[:order] == 'probe'
+      Message.create(
+        source: @game.officers.sample.name,
+        body: "Probe deployed.",
+        game_id: @game.id
+      )
       @game.supply.update(last_sci_at: Time.zone.now)
       if @game.stats[:sci] > rand(1..100)
-        flash[:game] = "We found something!"
+        Message.create(
+          source: @game.officers.sample.name,
+          body: "We've found something.",
+          game_id: @game.id
+        )
         @discovery = Discovery.create(
           player_id: current_user.player.id,
           game_id: @game.id,
           user_id: current_user.id
         )
       else
-        flash[:game] = "There's nothing here."
+        Message.create(
+          source: @game.officers.sample.name,
+          body: "There's nothing here.",
+          game_id: @game.id
+        )
       end
     elsif params[:order].present? && params[:order] == 'scan'
+      Message.create(
+        source: @game.officers.sample.name,
+        body: "Scan initiated.",
+        game_id: @game.id
+      )
       @game.supply.update(last_med_at: Time.zone.now)
       if @game.stats[:med] > rand(1..100)
         flash[:game] = "There's something out there!"
@@ -42,27 +68,68 @@ class GamesController < ApplicationController
           user_id: current_user.id
         )
       else
-        flash[:game] = "Nothing found."
+        Message.create(
+          source: @game.officers.sample.name,
+          body: "Nothing found.",
+          game_id: @game.id
+        )
       end
     elsif params[:order].present? && params[:order] == 'repair'
       @game.supply.update(last_eng_at: Time.zone.now)
       @game.supply.repair(10)
-      flash[:game] = "Repairs made."
+      Message.create(
+        source: @game.officers.sample.name,
+        body: "Repairs made.",
+        game_id: @game.id
+      )
     elsif params[:order].present? && params[:order] == 'status'
       return redirect_to status_game_path(id: @game.id)
     elsif params[:order].present? && params[:order] == 'alert'
       @game.supply.update(last_tac_at: Time.zone.now)
-      flash[:game] = "Full alert!"
+      Message.create(
+        source: @game.officers.sample.name,
+        body: "Full alert!",
+        game_id: @game.id
+      )
     elsif @game.supply.fuel < 1
-      flash[:game] = "We're out of fuel. It will take 24 hours for the engines to recharge."
+      Message.create(
+        source: @game.officers.sample.name,
+        body: "We're out of fuel. It will take 24 hours for the engines to recharge.",
+        game_id: @game.id
+      )
     elsif @game.challenges.present?
-      flash[:game] = "Sensors detecting a threat, bringing it up now."
       @challenge = @game.challenges.first
     elsif params[:order].present? && params[:order] == 'engage' && @settings.encouter_chance >= rand(1..100)
-      flash[:game] = "Sensors detecting a threat, bringing it up now."
       @challenge = Challenge.create(game_id: @game.id)
+      Message.create(
+        source: @game.officers.sample.name,
+        body: @challenge.name,
+        game_id: @game.id
+      )
+      sleep(0.5);
+      Message.create(
+        source: @game.officers.sample.name,
+        body: "Threat level, #{@challenge.level}!",
+        game_id: @game.id
+      )
+      sleep(0.5);
+      Message.create(
+        source: @game.officers.sample.name,
+        body: "Recommend a #{@challenge.trait} tactic!",
+        game_id: @game.id
+      )
+      sleep(0.5);
+      Message.create(
+        source: @game.officers.sample.name,
+        body: "Orders Captain?",
+        game_id: @game.id
+      )
     elsif params[:order].present? && params[:order] == 'engage' && (@settings.discovery_chance >= rand(1..100))
-      flash[:game] = "We've made a discovery Captain!"
+      Message.create(
+        source: @game.officers.sample.name,
+        body: "We've made a discovery Captian!",
+        game_id: @game.id
+      )
       @discovery = Discovery.create(
         player_id: current_user.player.id,
         game_id: @game.id,
@@ -80,11 +147,15 @@ class GamesController < ApplicationController
         "Where to?",
         "Standing by Captain."
       ].sample
-      flash[:game] = msg
+      Message.create(
+        source: @game.officers.sample.name,
+        body: msg,
+        game_id: @game.id
+      )
       @game.update(progress: @game.progress + 1)
       @game.supply.expend_fuel(1)
     else
-      flash[:game] = flash[:game]
+      # @todo
     end
   end
 
@@ -158,7 +229,11 @@ class GamesController < ApplicationController
       ship.delete unless ship.commanded
     end
 
-    flash[:game] = "We've left space dock, awaiting order Captain."
+    Message.create(
+      source: @game.officers.sample.name,
+      body: "We've left space dock, awaiting order Captain.",
+      game_id: @game.id
+    )
     redirect_to game_path(id: @game.id)
   end
 

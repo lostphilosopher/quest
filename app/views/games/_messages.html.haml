@@ -1,0 +1,6 @@
+- @game.messages.order('created_at DESC').limit(15).each do |message|
+  %strong
+    = "#{message.source}: "
+  = "#{message.body}"
+  %br
+= '...'

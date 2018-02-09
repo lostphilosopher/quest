@@ -24,15 +24,29 @@ class ChallengesController < ApplicationController
 
     logger.debug "[ChallengeReadout] P: #{player_value} C: #{challenge_value} L: #{@challenge.level} T: #{@challenge.trait} B: #{bonus} CB: #{crit_bonus}"
 
+    Message.create(
+      source: current_user.player.name,
+      body: "#{tactic.capitalize}",
+      game_id: @game.id
+    )
+
     if player_value > challenge_value
-      flash[:game] = "Tactic successful. All clear."
+      Message.create(
+        source: @game.officers.sample.name,
+        body: "Tactic successful. All clear.",
+        game_id: @game.id
+      )
       @game.update(
         progress: @game.progress + 1,
         points: @game.points + challenge_value
       )
       @game.supply.expend_resource_and_fuel(tactic, true)
     else
-      flash[:game] = "We're taking damage!"
+      Message.create(
+        source: @game.officers.sample.name,
+        body: "We're taking damage!",
+        game_id: @game.id
+      )
       @game.update(
         points: @game.points - challenge_value/@settings.failure_point_divisor
       )
@@ -59,8 +73,11 @@ class ChallengesController < ApplicationController
     @game.supply.expend_fuel(@settings.retreat_fuel_cost)
 
     @challenge.delete
-
-    flash[:game] = "Full power to the engines, we're falling back!"
+    Message.create(
+      source: @game.officers.sample.name,
+      body: "Full power to the engines, we're falling back!",
+      game_id: @game.id
+    )
     redirect_to game_path(id: @game.id)
   end
 end
