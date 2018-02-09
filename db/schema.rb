@@ -12,9 +12,6 @@
 
 ActiveRecord::Schema.define(version: 20180209041809) do
 
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
   create_table "challenges", force: :cascade do |t|
     t.integer  "game_id"
     t.string   "name"
@@ -24,7 +21,7 @@ ActiveRecord::Schema.define(version: 20180209041809) do
     t.string   "trait"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.index ["game_id"], name: "index_challenges_on_game_id", using: :btree
+    t.index ["game_id"], name: "index_challenges_on_game_id"
   end
 
   create_table "discoveries", force: :cascade do |t|
@@ -40,9 +37,9 @@ ActiveRecord::Schema.define(version: 20180209041809) do
     t.boolean  "logged"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
-    t.index ["game_id"], name: "index_discoveries_on_game_id", using: :btree
-    t.index ["player_id"], name: "index_discoveries_on_player_id", using: :btree
-    t.index ["user_id"], name: "index_discoveries_on_user_id", using: :btree
+    t.index ["game_id"], name: "index_discoveries_on_game_id"
+    t.index ["player_id"], name: "index_discoveries_on_player_id"
+    t.index ["user_id"], name: "index_discoveries_on_user_id"
   end
 
   create_table "games", force: :cascade do |t|
@@ -51,7 +48,7 @@ ActiveRecord::Schema.define(version: 20180209041809) do
     t.integer  "points",     default: 0
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
-    t.index ["user_id"], name: "index_games_on_user_id", using: :btree
+    t.index ["user_id"], name: "index_games_on_user_id"
   end
 
   create_table "messages", force: :cascade do |t|
@@ -60,7 +57,7 @@ ActiveRecord::Schema.define(version: 20180209041809) do
     t.string   "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["game_id"], name: "index_messages_on_game_id", using: :btree
+    t.index ["game_id"], name: "index_messages_on_game_id"
   end
 
   create_table "officers", force: :cascade do |t|
@@ -74,7 +71,7 @@ ActiveRecord::Schema.define(version: 20180209041809) do
     t.integer  "sci"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["game_id"], name: "index_officers_on_game_id", using: :btree
+    t.index ["game_id"], name: "index_officers_on_game_id"
   end
 
   create_table "players", force: :cascade do |t|
@@ -82,7 +79,7 @@ ActiveRecord::Schema.define(version: 20180209041809) do
     t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_players_on_user_id", using: :btree
+    t.index ["user_id"], name: "index_players_on_user_id"
   end
 
   create_table "records", force: :cascade do |t|
@@ -96,8 +93,8 @@ ActiveRecord::Schema.define(version: 20180209041809) do
     t.integer  "discoveries"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
-    t.index ["player_id"], name: "index_records_on_player_id", using: :btree
-    t.index ["user_id"], name: "index_records_on_user_id", using: :btree
+    t.index ["player_id"], name: "index_records_on_player_id"
+    t.index ["user_id"], name: "index_records_on_user_id"
   end
 
   create_table "regions", force: :cascade do |t|
@@ -147,7 +144,7 @@ ActiveRecord::Schema.define(version: 20180209041809) do
     t.integer  "sci"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["game_id"], name: "index_ships_on_game_id", using: :btree
+    t.index ["game_id"], name: "index_ships_on_game_id"
   end
 
   create_table "supplies", force: :cascade do |t|
@@ -166,7 +163,7 @@ ActiveRecord::Schema.define(version: 20180209041809) do
     t.datetime "last_cmd_at"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
-    t.index ["game_id"], name: "index_supplies_on_game_id", using: :btree
+    t.index ["game_id"], name: "index_supplies_on_game_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -178,13 +175,13 @@ ActiveRecord::Schema.define(version: 20180209041809) do
     t.integer  "sign_in_count",          default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.string     "current_sign_in_ip"
-    t.string     "last_sign_in_ip"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
     t.boolean  "admin"
-    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
 end
