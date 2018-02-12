@@ -2,6 +2,11 @@ class Challenge < ApplicationRecord
   belongs_to :game
   after_create :roll
 
+  # @todo Solidify if this is a has/belongs relationship
+  def flavor_text
+    FlavorText.find_by(id: flavor_text_id)
+  end
+
   def points
     (value * level) + settings.challenge_bump
   end
@@ -13,10 +18,7 @@ class Challenge < ApplicationRecord
   private
 
   def roll
-    yml = YAML.load_file('lib/yamls/scenarios.yml')
-    yml = yml.to_a
-    x = rand(0..yml.count - 1)
-    scenario = yml[x]
+    flavor_text = FlavorText.where(category: :challenge).sample
     level = rand(1..7) # Not a setting
     # With 5 crew, 1 ship, and 1 station bonus the
     # "average" statistical player would have 350
@@ -30,15 +32,10 @@ class Challenge < ApplicationRecord
     update({
       level: level,
       value: rand(1..100),
-      name: scenario.first,
-      description: scenario.second,
-      trait: [
-        'CMD',
-        'ENG',
-        'MED',
-        'SCI',
-        'TAC'
-      ].sample
+      name: nil,
+      description: flavor_text.body,
+      trait: flavor_text.trait,
+      flavor_text_id: flavor_text.id
     })
   end
 end

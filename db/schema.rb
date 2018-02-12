@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180209041809) do
+ActiveRecord::Schema.define(version: 20180212042528) do
 
   create_table "challenges", force: :cascade do |t|
     t.integer  "game_id"
@@ -19,8 +19,9 @@ ActiveRecord::Schema.define(version: 20180209041809) do
     t.integer  "level"
     t.integer  "value"
     t.string   "trait"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.integer  "flavor_text_id"
     t.index ["game_id"], name: "index_challenges_on_game_id"
   end
 
@@ -40,6 +41,29 @@ ActiveRecord::Schema.define(version: 20180209041809) do
     t.index ["game_id"], name: "index_discoveries_on_game_id"
     t.index ["player_id"], name: "index_discoveries_on_player_id"
     t.index ["user_id"], name: "index_discoveries_on_user_id"
+  end
+
+  create_table "flavor_texts", force: :cascade do |t|
+    t.integer  "category"
+    t.integer  "trait"
+    t.text     "body"
+    t.string   "cmd_order"
+    t.string   "cmd_success"
+    t.string   "cmd_failed"
+    t.string   "sci_order"
+    t.string   "sci_success"
+    t.string   "sci_failed"
+    t.string   "med_order"
+    t.string   "med_success"
+    t.string   "med_failed"
+    t.string   "tac_order"
+    t.string   "tac_success"
+    t.string   "tac_failed"
+    t.string   "eng_order"
+    t.string   "eng_success"
+    t.string   "eng_failed"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "games", force: :cascade do |t|

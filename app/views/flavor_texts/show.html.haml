@@ -1,0 +1,50 @@
+.container-fluid
+  .row
+    .col-xs-12
+      .text-right
+        = link_to 'Create New', new_flavor_text_path, class: 'btn btn-default'
+
+  .row
+    .col-md-1
+      %strong
+        Category
+    .col-md-1
+      %strong
+        Trait
+    .col-md-2
+      %strong
+        Body
+    .col-md-2
+      %strong
+        Order
+    .col-md-3
+      %strong
+        Success
+    .col-md-3
+      %strong
+        Failed
+  .row
+    .col-md-1
+      = "#{@flavor_text.category}"
+    .col-md-1
+      = "#{@flavor_text.trait}"
+    .col-md-2
+      = "#{@flavor_text.body}"
+    .col-md-2
+      - ['cmd', 'eng', 'tac', 'sci', 'med'].each do |t|
+        = "#{@flavor_text.send("#{t}_order")}"
+        %br
+    .col-md-3
+      - ['cmd', 'eng', 'tac', 'sci', 'med'].each do |t|
+        = "#{@flavor_text.send("#{t}_success")}"
+        %br
+    .col-md-3
+      - ['cmd', 'eng', 'tac', 'sci', 'med'].each do |t|
+        = "#{@flavor_text.send("#{t}_failed")}"
+        %br
+  .row
+    .col-md-1.col-md-offset-11
+      .text-right
+        = link_to 'Update', edit_flavor_text_path(id: @flavor_text.id), class: 'btn btn-default'
+        %br
+        %br

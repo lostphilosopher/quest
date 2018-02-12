@@ -1,0 +1,59 @@
+= form_for flavor_text do |f|
+  .form-group
+    = f.label :body
+    = f.text_area :body
+  .form-group
+    = f.label :category
+    = f.select :category, options_from_enum_for_select(flavor_text, :category)
+  .form-group
+    = f.label :trait
+    = f.select :trait, options_from_enum_for_select(flavor_text, :trait)
+
+  .form-group
+    = f.label :cmd_order
+    = f.text_area :cmd_order
+  .form-group
+    = f.label :cmd_success
+    = f.text_area :cmd_success
+  .form-group
+    = f.label :cmd_failed
+    = f.text_area :cmd_failed
+  .form-group
+    = f.label :sci_order
+    = f.text_area :sci_order
+  .form-group
+    = f.label :sci_success
+    = f.text_area :sci_success
+  .form-group
+    = f.label :sci_failed
+    = f.text_area :sci_failed
+  .form-group
+    = f.label :med_order
+    = f.text_area :med_order
+  .form-group
+    = f.label :med_success
+    = f.text_area :med_success
+  .form-group
+    = f.label :med_failed
+    = f.text_area :med_failed
+  .form-group
+    = f.label :tac_order
+    = f.text_area :tac_order
+  .form-group
+    = f.label :tac_success
+    = f.text_area :tac_success
+  .form-group
+    = f.label :tac_failed
+    = f.text_area :tac_failed
+  .form-group
+    = f.label :eng_order
+    = f.text_area :eng_order
+  .form-group
+    = f.label :eng_success
+    = f.text_area :eng_success
+  .form-group
+    = f.label :eng_failed
+    = f.text_area :eng_failed
+
+  .form-controls
+    = f.submit 'Save', class: 'btn btn-default'
