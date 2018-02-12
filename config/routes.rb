@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :flavor_texts
   resources :messages
   resources :discoveries
   resources :records

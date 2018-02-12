@@ -18,8 +18,11 @@
               = link_to 'Continue', game_path(id: current_user.game.id)
           %li
             = link_to 'Discoveries', discoveries_path
-          %li
-            = link_to 'Settings', edit_setting_path(id: @settings.id)
+          - if current_user.admin?
+            %li
+              = link_to 'Settings', edit_setting_path(id: @settings.id)
+            %li
+              = link_to 'Flavor Text', flavor_texts_path
           %li
             = link_to 'Sign out', destroy_user_session_path, { method: :delete }
         - else

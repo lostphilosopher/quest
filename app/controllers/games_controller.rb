@@ -11,7 +11,7 @@ class GamesController < ApplicationController
       @game.supply.update(fuel: @settings.max_fuel)
       Message.create(
         source: @game.officers.sample.name,
-        body: 'Engines recharged! Standing by.',
+        body: FlavorText.where(category: :refueled).sample.body,
         game_id: @game.id
       )
     end
@@ -24,21 +24,21 @@ class GamesController < ApplicationController
     if params[:order].present? && params[:order] == 'launch'
       Message.create(
         source: @game.officers.sample.name,
-        body: "We've left Space Dock.",
+        body: FlavorText.where(category: :launch).sample.body,
         game_id: @game.id
       )
       @game.update(progress: 0)
     elsif params[:order].present? && params[:order] == 'probe'
       Message.create(
         source: @game.officers.sample.name,
-        body: "Probe deployed.",
+        body: FlavorText.where(category: :probe).sample.body,
         game_id: @game.id
       )
       @game.supply.update(last_sci_at: Time.zone.now)
       if @game.stats[:sci] > rand(1..100)
         Message.create(
           source: @game.officers.sample.name,
-          body: "We've found something.",
+          body: FlavorText.where(category: :discovery).sample.body,
           game_id: @game.id
         )
         @discovery = Discovery.create(
@@ -49,19 +49,23 @@ class GamesController < ApplicationController
       else
         Message.create(
           source: @game.officers.sample.name,
-          body: "There's nothing here.",
+          body: FlavorText.where(category: :no_discovery).sample.body,
           game_id: @game.id
         )
       end
     elsif params[:order].present? && params[:order] == 'scan'
       Message.create(
         source: @game.officers.sample.name,
-        body: "Scan initiated.",
+        body: FlavorText.where(category: :scan).sample.body,
         game_id: @game.id
       )
       @game.supply.update(last_med_at: Time.zone.now)
       if @game.stats[:med] > rand(1..100)
-        flash[:game] = "There's something out there!"
+        Message.create(
+          source: @game.officers.sample.name,
+          body: FlavorText.where(category: :discovery).sample.body,
+          game_id: @game.id
+        )
         @discovery = Discovery.create(
           player_id: current_user.player.id,
           game_id: @game.id,
@@ -70,7 +74,7 @@ class GamesController < ApplicationController
       else
         Message.create(
           source: @game.officers.sample.name,
-          body: "Nothing found.",
+          body: FlavorText.where(category: :no_discovery).sample.body,
           game_id: @game.id
         )
       end
@@ -79,7 +83,7 @@ class GamesController < ApplicationController
       @game.supply.repair(10)
       Message.create(
         source: @game.officers.sample.name,
-        body: "Repairs made.",
+        body: FlavorText.where(category: :repair).sample.body,
         game_id: @game.id
       )
     elsif params[:order].present? && params[:order] == 'status'
@@ -88,25 +92,26 @@ class GamesController < ApplicationController
       @game.supply.update(last_tac_at: Time.zone.now)
       Message.create(
         source: @game.officers.sample.name,
-        body: "Full alert!",
+        body: FlavorText.where(category: :alert).sample.body,
         game_id: @game.id
       )
     elsif @game.supply.fuel < 1
       Message.create(
         source: @game.officers.sample.name,
-        body: "We're out of fuel. It will take 24 hours for the engines to recharge.",
+        body: FlavorText.where(category: :no_fuel).sample.body,
         game_id: @game.id
       )
     elsif @game.challenges.present?
       @challenge = @game.challenges.first
+      @flavor_text = FlavorText.find_by(id: @challenge.flavor_text_id)
     elsif params[:order].present? && params[:order] == 'engage' && @settings.encouter_chance >= rand(1..100)
       @challenge = Challenge.create(game_id: @game.id)
+      @flavor_text = FlavorText.find_by(id: @challenge.flavor_text_id)
       Message.create(
         source: @game.officers.sample.name,
-        body: @challenge.name,
+        body: @challenge.description,
         game_id: @game.id
       )
-      sleep(0.5);
       Message.create(
         source: @game.officers.sample.name,
         body: "Threat level, #{@challenge.level}!",
@@ -115,19 +120,13 @@ class GamesController < ApplicationController
       sleep(0.5);
       Message.create(
         source: @game.officers.sample.name,
-        body: "Recommend a #{@challenge.trait} tactic!",
-        game_id: @game.id
-      )
-      sleep(0.5);
-      Message.create(
-        source: @game.officers.sample.name,
-        body: "Orders Captain?",
+        body: FlavorText.where(category: :default).sample.body,
         game_id: @game.id
       )
     elsif params[:order].present? && params[:order] == 'engage' && (@settings.discovery_chance >= rand(1..100))
       Message.create(
         source: @game.officers.sample.name,
-        body: "We've made a discovery Captian!",
+        body: FlavorText.where(category: :discovery).sample.body,
         game_id: @game.id
       )
       @discovery = Discovery.create(
@@ -138,18 +137,9 @@ class GamesController < ApplicationController
       @game.update(progress: @game.progress + 1)
       @game.supply.expend_fuel(1)
     elsif params[:order].present? && params[:order] == 'engage'
-      msg = [
-        "We\'ve arrived, awaiting order.",
-        "Done.",
-        "Complete",
-        "All stations ready",
-        "Your order Captain?",
-        "Where to?",
-        "Standing by Captain."
-      ].sample
       Message.create(
         source: @game.officers.sample.name,
-        body: msg,
+        body: FlavorText.where(category: :engage).sample.body,
         game_id: @game.id
       )
       @game.update(progress: @game.progress + 1)
@@ -231,7 +221,7 @@ class GamesController < ApplicationController
 
     Message.create(
       source: @game.officers.sample.name,
-      body: "We've left space dock, awaiting order Captain.",
+      body: FlavorText.where(category: :launch).sample.body,
       game_id: @game.id
     )
     redirect_to game_path(id: @game.id)
