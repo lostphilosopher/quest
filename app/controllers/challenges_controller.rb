@@ -16,19 +16,11 @@ class ChallengesController < ApplicationController
     end
 
     if @game.supply.in_alert?
-      crit_bonus = bonus * 2
-    else
-      crit_bonus = 0
-    end
-
-    if @game.supply.in_alert?
       player_value = @game.stats[@challenge.trait_sym] + bonus
     else
       player_value = (@game.stats[@challenge.trait_sym] * 2) + bonus
     end
     challenge_value = @challenge.points
-
-    logger.debug "[ChallengeReadout] P: #{player_value} C: #{challenge_value} L: #{@challenge.level} T: #{@challenge.trait} B: #{bonus} CB: #{crit_bonus}"
 
     Message.create(
       source: current_user.player.name,

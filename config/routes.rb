@@ -16,8 +16,16 @@ Rails.application.routes.draw do
       get :starbase
       get :status
     end
-    resources :officers
-    resources :ships
+    resources :officers do
+      collection do
+        post :roll
+      end
+    end
+    resources :ships do
+      collection do
+        post :roll
+      end
+    end
     resources :challenges do
       post :accept
       post :retreat

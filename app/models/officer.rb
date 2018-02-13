@@ -34,6 +34,14 @@ class Officer < ApplicationRecord
     end
   end
 
+  def level
+    (cmd + eng + med + tac + sci)/100
+  end
+
+  def self.assigned
+    self.where.not(station: '')
+  end
+
   private
 
   def roll
