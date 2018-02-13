@@ -13,7 +13,7 @@
         - if current_user
           %li
             = link_to 'Menu', games_path
-          - if current_user.game && current_user.game.supply
+          - if current_user.game && current_user.game.progress > 1
             %li
               = link_to 'Continue', game_path(id: current_user.game.id)
           %li

@@ -10,7 +10,7 @@ class Supply < ApplicationRecord
     expend_fuel(1)
 
     if success
-      expend_resource(resource, 2, 1)
+      expend_resource(resource, 1, 1)
     else
       expend_resource(resource, 0, 2)
     end
@@ -68,22 +68,38 @@ class Supply < ApplicationRecord
 
   def can_tac?
     return true unless last_tac_at
-    Time.zone.now > (last_tac_at + settings.tac_cycle_time.hours)
+    Time.zone.now > tac_refresh
+  end
+
+  def tac_refresh
+    last_tac_at + settings.tac_cycle_time.hours
   end
 
   def can_eng?
     return true unless last_eng_at
-    Time.zone.now > (last_eng_at + settings.eng_cycle_time.hours)
+    Time.zone.now > eng_refresh
+  end
+
+  def eng_refresh
+    last_eng_at + settings.eng_cycle_time.hours
   end
 
   def can_sci?
     return true unless last_sci_at
-    Time.zone.now > (last_sci_at + settings.sci_cycle_time.hours)
+    Time.zone.now > sci_refresh
+  end
+
+  def sci_refresh
+    last_sci_at + settings.sci_cycle_time.hours
   end
 
   def can_med?
     return true unless last_med_at
-    Time.zone.now > (last_med_at + settings.med_cycle_time.hours)
+    Time.zone.now > med_refresh
+  end
+
+  def med_refresh
+    last_med_at + settings.med_cycle_time.hours
   end
 
   def reup

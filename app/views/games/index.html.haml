@@ -32,13 +32,13 @@
 
       %h3
         High Score:
-      - Record.all.order("points DESC").last(5).each do |record|
+      - Record.all.order("points DESC").limit(5).each do |record|
         = "#{record.captain_name} #{record.points} points while commanding #{record.ship_name}"
         %br
 
       %h3
         Furthest Distance Reached:
-      - Record.all.order("progress DESC").last(5).each do |record|
+      - Record.all.order("progress DESC").limit(5).each do |record|
         = "#{record.captain_name} #{record.progress} points while commanding #{record.ship_name}"
         %br
         %br
@@ -48,13 +48,13 @@
 
       %h3
         High Score:
-      - Record.where(player_id: current_user.player.id).order("points DESC").last(5).each do |record|
+      - Record.where(player_id: current_user.player.id).order("points DESC").limit(5).each do |record|
         = "#{record.captain_name} #{record.points} points while commanding #{record.ship_name}"
         %br
 
       %h3
         Furthest Distance Reached:
-      - Record.where(player_id: current_user.player.id).order("progress DESC").last(5).each do |record|
+      - Record.where(player_id: current_user.player.id).order("progress DESC").limit(5).each do |record|
         = "#{record.captain_name} #{record.progress} points while commanding #{record.ship_name}"
         %br
         %br

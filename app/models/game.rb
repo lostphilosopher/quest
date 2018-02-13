@@ -7,6 +7,8 @@ class Game < ApplicationRecord
   has_many :messages, dependent: :destroy
   has_one :supply, dependent: :destroy
 
+  after_create :roll
+
   before_save :prevent_negatives
 
   def attribute_from_station(station)
@@ -37,5 +39,9 @@ class Game < ApplicationRecord
   def prevent_negatives
     self.points = 0 if (self.points && self.points < 0)
     self.progress = 0 if (self.points && self.progress < 0)
+  end
+
+  def roll
+    update(name: Faker::Space.star)
   end
 end

@@ -1,11 +1,12 @@
 .container-fluid
   .row
-    .col-xs-6.col-xs-3
+    .col-xs-8.col-xs-offset-2
       %h1
         Starbase
-      = link_to 'Launch', game_path(id: @game.id, params: { order: 'launch' }), class: 'btn btn-default btn-lg'
-      = link_to('End Mission', game_path(id: @game.id), class: 'btn btn-default btn-lg', method: :delete)
-      = link_to('Log Discoveries', discoveries_path, class: 'btn btn-default btn-lg')
+      = link_to 'Launch', game_path(id: @game.id, params: { order: 'launch' }), class: 'btn btn-default'
+      = link_to('End Mission', game_path(id: @game.id), class: 'btn btn-default', method: :delete)
+      = link_to('Log Discoveries', discoveries_path, class: 'btn btn-default')
+      = link_to('Recruit Crew', edit_game_path(id: @game.id), class: 'btn btn-default')
       %br
       %br
       .bordered.padded
@@ -18,3 +19,15 @@
         %h2
           Logged Discoveries:
           = "#{@discoveries.count}" if @game.discoveries
+  %br
+  .row
+    .col-xs-8.col-xs-offset-2
+      .bordered.padded
+        %h2
+          Voyage Name
+        = form_for @game do |f|
+          .form-group
+            = f.label :name
+            = f.text_field :name
+          .form-controls
+            = f.submit 'Launch', class: 'btn btn-default'

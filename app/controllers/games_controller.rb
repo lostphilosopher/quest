@@ -198,7 +198,7 @@ class GamesController < ApplicationController
   def launch
     @game = Game.find(params[:id])
 
-    assigned_officers = @game.officers.where.not(station: '')
+    assigned_officers = @game.officers.assigned
     if assigned_officers.count != 5 # Not a setting
       redirect_to(edit_game_path(id: @game.id), flash: { error: 'A full compliment of officers (5) must be assigned.' }) && return
     end
@@ -235,13 +235,35 @@ class GamesController < ApplicationController
     @game = Game.find(params[:id])
   end
 
+  def update
+    @game = Game.find(params[:id])
+    @game.update(game_params)
+    redirect_to game_path(id: @game.id)
+  end
+
   def starbase
     @game = Game.find(params[:id])
+
     @discoveries = Discovery.where(logged: true, game_id: @game.id)
+    Record.create(
+      player_id: current_user.player.id,
+      user_id: current_user.id,
+      voyage_name: @game.name,
+      ship_name: @game.ships.first.name,
+      captain_name: current_user.player.name,
+      progress: @game.progress,
+      points: @game.points,
+      discoveries: @discoveries.count
+    ) if @game.progress > 0 && @game.points > 0
+    @game.update(progress: 0)
     @game.supply.reup
   end
 
   private
+
+  def game_params
+    params.require(:game).permit(:name)
+  end
 
   def discover
     @game = Game.find(params[:id])

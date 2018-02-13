@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180212042528) do
+ActiveRecord::Schema.define(version: 20180213022917) do
 
   create_table "challenges", force: :cascade do |t|
     t.integer  "game_id"
@@ -72,6 +72,7 @@ ActiveRecord::Schema.define(version: 20180212042528) do
     t.integer  "points",     default: 0
     t.datetime "created_at",             null: false
     t.datetime "updated_at",             null: false
+    t.string   "name"
     t.index ["user_id"], name: "index_games_on_user_id"
   end
 
@@ -95,6 +96,7 @@ ActiveRecord::Schema.define(version: 20180212042528) do
     t.integer  "sci"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean  "active"
     t.index ["game_id"], name: "index_officers_on_game_id"
   end
 
@@ -153,8 +155,10 @@ ActiveRecord::Schema.define(version: 20180212042528) do
     t.integer  "sci_cycle_time",                    default: 1
     t.integer  "med_cycle_time",                    default: 1
     t.integer  "tac_cycle_time",                    default: 1
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
+    t.datetime "created_at",                                        null: false
+    t.datetime "updated_at",                                        null: false
+    t.integer  "officer_cost",                      default: 1000
+    t.integer  "ship_cost",                         default: 10000
   end
 
   create_table "ships", force: :cascade do |t|
