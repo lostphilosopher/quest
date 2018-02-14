@@ -25,6 +25,12 @@ class FlavorTextsController < ApplicationController
     @flavor_text = FlavorText.find_by(id: params[:id])
   end
 
+  def destroy
+    @flavor_text = FlavorText.find_by(id: params[:id])
+    @flavor_text.destroy
+    redirect_to flavor_texts_path
+  end
+
   private
 
   def flavor_text_params
