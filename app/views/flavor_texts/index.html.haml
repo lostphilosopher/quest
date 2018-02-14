@@ -44,6 +44,7 @@
     .row
       .col-md-1.col-md-offset-11
         .text-right
+          = link_to 'Delete', flavor_text_path(id: flavor_text.id), method: :delete, class: 'btn btn-default'
           = link_to 'Update', edit_flavor_text_path(id: flavor_text.id), class: 'btn btn-default'
           %br
           %br
