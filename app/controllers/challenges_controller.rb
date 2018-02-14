@@ -49,7 +49,7 @@ class ChallengesController < ApplicationController
         points: @game.points - challenge_value/@settings.failure_point_divisor
       )
       @game.supply.expend_resource_and_fuel(tactic, false)
-      @game.supply.update(shields: @game.supply.shields - @challenge.level)
+      @game.supply.update(shields: @game.supply.shields - (@challenge.level * @settings.damage_multiplier))
     end
 
     @challenge.delete

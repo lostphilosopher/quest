@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180213022917) do
+ActiveRecord::Schema.define(version: 20180214011811) do
 
   create_table "challenges", force: :cascade do |t|
     t.integer  "game_id"
@@ -159,6 +159,7 @@ ActiveRecord::Schema.define(version: 20180213022917) do
     t.datetime "updated_at",                                        null: false
     t.integer  "officer_cost",                      default: 1000
     t.integer  "ship_cost",                         default: 10000
+    t.integer  "damage_multiplier",                 default: 1
   end
 
   create_table "ships", force: :cascade do |t|

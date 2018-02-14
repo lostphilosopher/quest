@@ -28,26 +28,7 @@ class FlavorTextsController < ApplicationController
   private
 
   def flavor_text_params
-    p = params.require(:flavor_text).permit(
-      :body,
-      :category,
-      :trait,
-      :cmd_order,
-      :cmd_success,
-      :cmd_failed,
-      :sci_order,
-      :sci_success,
-      :sci_failed,
-      :tac_order,
-      :tac_success,
-      :tac_failed,
-      :med_order,
-      :emd_success,
-      :med_failed,
-      :eng_order,
-      :eng_success,
-      :eng_failed
-    )
+    p = params.require(:flavor_text).permit(FlavorText.column_names)
     p[:trait] = nil if p[:trait] == 'not_applicable'
     p
   end
